@@ -4,12 +4,12 @@ import seaborn as sns
 
 def main():
     # Read the CSV file
-    csv_path = "Hospital Patient Records/hospital.csv"
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv("Hospital Patient Records/hospital.csv")
     
-    # Print the first few rows of the DataFrame and column names
-    print("Columns in the dataset:", df.columns)
+
     print(df)
+    
+    
     
     # Visualizations
     
@@ -21,20 +21,29 @@ def main():
     plt.ylabel('Count')
     plt.show()
     
-    # Box plot of bill amounts by gender
-    plt.figure(figsize=(10, 6))
-    sns.boxplot(x='Gender', y='Bill Amount', data=df)
-    plt.title('Bill Amount Distribution by Gender')
-    plt.xlabel('Gender')
-    plt.ylabel('Bill Amount')
+    # Pie chart of total bill amounts by gender
+    plt.figure(figsize=(8, 8))
+    bill_amounts_by_gender = df.groupby('Gender')['Bill Amount'].sum()
+    bill_amounts_by_gender.plot(kind='pie', autopct='%1.1f%%', startangle=140, colors=['#66b3ff', '#99ff99'])
+    plt.title('Total Bill Amounts by Gender')
+    plt.ylabel('')  # Hide the y-label
     plt.show()
+
+    # Number of top medical conditions to display
+    top_n = 10
     
-    # Bar chart of medical conditions by gender
-    plt.figure(figsize=(12, 8))
-    sns.countplot(x='Date of Birth', hue='Gender', data=df)
-    plt.title('Number of Patients per Medical Condition by Gender')
-    plt.xlabel('Medical Condition')
-    plt.ylabel('Count')
+    # Get the top N medical conditions
+    top_conditions = df['Medical Condition'].value_counts().nlargest(top_n).index
+    
+    # Filter the dataframe to include only the top N medical conditions
+    top_df = df[df['Medical Condition'].isin(top_conditions)]
+    
+    # Bar chart of top N medical conditions by gender
+    plt.figure(figsize=(14, 10))
+    sns.countplot(y='Medical Condition', hue='Gender', data=top_df, order=top_conditions)
+    plt.title(f'Number of Patients per Medical Condition by Gender (Top {top_n})')
+    plt.xlabel('Count')
+    plt.ylabel('Medical Condition')
     plt.legend(title='Gender')
     plt.show()
 
