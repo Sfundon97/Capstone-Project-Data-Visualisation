@@ -5,28 +5,24 @@ import seaborn as sns
 def main():
     # Read the CSV file
     df = pd.read_csv("Hospital Patient Records/hospital.csv")
-    
-
     print(df)
-    
-    
-    
-    # Visualizations
+   
     
     # Bar chart of counts by gender
     plt.figure(figsize=(8, 6))
     sns.countplot(x='Gender', data=df)
     plt.title('Distribution of Patients by Gender')
     plt.xlabel('Gender')
-    plt.ylabel('Count')
+    plt.ylabel('Patient Count')
     plt.show()
     
     # Pie chart of total bill amounts by gender
     plt.figure(figsize=(8, 8))
     bill_amounts_by_gender = df.groupby('Gender')['Bill Amount'].sum()
-    bill_amounts_by_gender.plot(kind='pie', autopct='%1.1f%%', startangle=140, colors=['#66b3ff', '#99ff99'])
+    bill_amounts_by_gender.plot(kind='pie', autopct='%1.1f%%', startangle=140, colors=['Blue', 'Purple'])
     plt.title('Total Bill Amounts by Gender')
-    plt.ylabel('')  # Hide the y-label
+    plt.legend(title='Gender')
+    plt.ylabel('')
     plt.show()
 
     # Number of top medical conditions to display
@@ -41,8 +37,8 @@ def main():
     # Bar chart of top N medical conditions by gender
     plt.figure(figsize=(14, 10))
     sns.countplot(y='Medical Condition', hue='Gender', data=top_df, order=top_conditions)
-    plt.title(f'Number of Patients per Medical Condition by Gender (Top {top_n})')
-    plt.xlabel('Count')
+    plt.title(f'Patients per Medical Condition by Gender (Top {top_n})')
+    plt.xlabel('Medical Condition Count')
     plt.ylabel('Medical Condition')
     plt.legend(title='Gender')
     plt.show()
