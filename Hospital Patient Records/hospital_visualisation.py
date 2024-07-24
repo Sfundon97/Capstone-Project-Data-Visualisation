@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def main():
-    # Read the CSV file
+    #Read the CSV file
     df = pd.read_csv("Hospital Patient Records/hospital.csv")
+
+    #Data Analysis
     print('Dataframe Contents')
     print('==================================================================')
     print(df)
@@ -15,7 +17,7 @@ def main():
     print(df.info())
     print('------------------------------------------------------------------')
     print()
-    print('Summary statistics (like count, mean, min, max, etc.)')
+    print('Summary statistics (count, mean, min, max, etc.)')
     print('==================================================================')
     print(df.describe())
     print('------------------------------------------------------------------')
@@ -26,7 +28,7 @@ def main():
     print('------------------------------------------------------------------')
 
   
-    # Bar chart of counts by gender
+    #Bar chart of Distribution of Patients by Gender
     plt.figure(figsize=(8, 6))
     sns.countplot(x='Gender', data=df)
     plt.title('Distribution of Patients by Gender')
@@ -34,7 +36,7 @@ def main():
     plt.ylabel('Patient Count')
     plt.show()
     
-    # Pie chart of total bill amounts by gender
+    #Pie chart of total bill amounts by gender
     plt.figure(figsize=(8, 8))
     bill_amounts_by_gender = df.groupby('Gender')['Bill Amount'].sum()
     bill_amounts_by_gender.plot(kind='pie', autopct='%1.1f%%', startangle=140, colors=['Blue', 'Purple'])
@@ -43,16 +45,16 @@ def main():
     plt.ylabel('')
     plt.show()
 
-    # Number of top medical conditions to display
+    #Number of top medical conditions to display variable
     top_n = 10
     
-    # Get the top N medical conditions
+    #Get the top N medical conditions
     top_conditions = df['Medical Condition'].value_counts().nlargest(top_n).index
     
-    # Filter the dataframe to include only the top N medical conditions
+    #Filter the dataframe to include only the top N medical conditions
     top_df = df[df['Medical Condition'].isin(top_conditions)]
     
-    # Bar chart of top N medical conditions by gender
+    #Bar chart of top N medical conditions by gender
     plt.figure(figsize=(14, 10))
     sns.countplot(y='Medical Condition', hue='Gender', data=top_df, order=top_conditions)
     plt.title(f'Patients per Medical Condition by Gender (Top {top_n})')
@@ -69,6 +71,7 @@ def main():
     plt.ylabel('Frequency')
     plt.show()
 
+    #Calculate the median of the Bill Amount and mode of the Gender column in the DataFrame
     median_amount = df['Bill Amount'].median(axis=0)
     mode_gender = df['Gender'].mode()
     print('Median Bill: ', median_amount)
